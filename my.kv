@@ -133,6 +133,7 @@
 
 
 <MainWindow>:
+    name: "main"
     Button:
         text: "Daily Survey"
         size_hint: 0.5, 0.1
@@ -171,29 +172,284 @@
             root.getCode()
 
 <DailySurvey>:
-    Label:
-        text: 'Daily Survey'
-        pos_hint: {"center_x":0.5, "top":0.9}
-        size_hint: 0.4, 0.1
-        font_size: (root.width**2 + root.height**2) / 10**4
+    name: "survey"
+    fever: fever
+    
+    FloatLayout:
+        cols:1
+        FloatLayout:
+            size: root.width, root.height/2
 
+            Label:
+                text: "Daily Survey"
+                size_hint: 0.8, 0.2
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 12**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0.05, "top":0.8}
+                text: "Did you have fever greater than 100.4 degrees in the past 24 hours?"
+                font_size: 20
+                text_size: self.size
+
+            Spinner:
+                id: fever
+                pos_hint: {"x":0.65, "top":0.75}
+                size_hint: 0.2, 0.06
+                font_size: (root.width**2 + root.height**2) / 16**4
+                text: "No"
+                values: ('Yes', 'No') 
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0.05, "top":0.8-0.13}
+                text: "Were you in contact with anyone who appeared sick in the past 24 hours?"
+                font_size: 20
+                text_size: self.size
+
+            Spinner:
+                pos_hint: {"x":0.65, "top":0.75-0.13}
+                size_hint: 0.2, 0.06
+                font_size: (root.width**2 + root.height**2) / 16**4
+                text: "No"
+                values: ('Yes', 'No')
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0.05, "top":0.8-0.13*2}
+                text: "Have you been in contact with anyone who tested positive for COVID-19 in the past 24h? "
+                font_size: 20
+                text_size: self.size
+
+            Spinner:
+                pos_hint: {"x":0.65, "top":0.75-0.13*2}
+                size_hint: 0.2, 0.06
+                font_size: (root.width**2 + root.height**2) / 16**4
+                text: "No"
+                values: ('Yes', 'No')
+            
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0.05, "top":0.8-0.13*3.25}
+                text: "Did anyone in your household have a fever greater than 100.4 degrees in the past 24 hours?"
+                font_size: 20
+                text_size: self.size
+
+            Spinner:
+                pos_hint: {"x":0.65, "top":0.75-0.13*3}
+                size_hint: 0.2, 0.06
+                font_size: (root.width**2 + root.height**2) / 16**4
+                text: "No"
+                values: ('Yes', 'No')
+
+            Button:
+                pos_hint:{"x":0.3,"y":0.05}
+                size_hint: 0.4, 0.10
+                text: "Next Page"
+                font_size: (root.width**2 + root.height**2) / 14**4
+                on_release: 
+                    root.manager.transition.direction = "left"
+                    root.contSurvey()
+
+<DailySurveyTwo>:
     Label:
-        text: "Survey coming soon!"
-        pos_hint: {"center_x":0.5, "top":0.6}
-        size_hint: 0.4, 0.1
-        font_size: (root.width**2 + root.height**2) / 14**4
+        text: "Daily Survey"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "top":1}
+        font_size: (root.width**2 + root.height**2) / 12**4
+    Label:
+        size_hint: 0.5,0.12
+        pos_hint: {"x":0.15, "top":0.85}
+        text: "Do you have any of the following symptoms? (Check all that apply)"
+        font_size: 20
+        text_size: self.size
+
+    CheckBoxLayout:
+        pos_hint: {"center_x":0.5, "center_y":0.35}
 
     Button:
-        pos_hint:{"x":0.1,"y":0.1}
-        size_hint: 0.25, 0.1
-        font_size: (root.width**2 + root.height**2) / 14**4
-        text: "Back"
-        on_release: app.goToMain()
-        
+        pos_hint:{"x":0.55,"y":0.05}
+        size_hint: 0.3, 0.07
+        text: "Next Page"
+        font_size: (root.width**2 + root.height**2) / 16**4
+        on_release:
+            root.manager.transition.direction = "left"
+            root.contSurvey()
 
-<QRCode>:
+<DailySurveyThree>:
     Label:
-        text: 'QR Code'
+        text: "Daily Survey"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "top":1}
+        font_size: (root.width**2 + root.height**2) / 12**4
+    Label:
+        size_hint: 0.5,0.12
+        pos_hint: {"x":0.15, "top":0.80}
+        text: "Does anyone in your household have any of the following symptoms? (Check all that apply)"
+        font_size: 20
+        text_size: self.size
+
+    CheckBoxLayout:
+        pos_hint: {"center_x":0.5, "center_y":0.35}
+
+    Button:
+        pos_hint:{"x":0.55,"y":0.05}
+        size_hint: 0.3, 0.07
+        text: "Finish Survey"
+        font_size: (root.width**2 + root.height**2) / 16**4
+        on_release:
+            root.manager.transition.direction = "left"
+            root.submitSurvey()
+
+<CustLabel@Label>: 
+    color: .761, .190, .810, 1
+    
+<CheckBoxLayout>:
+    size_hint: .65, .65
+    pos_hint: {'center_x':0.50, 'center_y':0.35}
+    # creating box layout 
+    BoxLayout: 
+        # assigning orentation 
+        orientation: "vertical"
+        spacing: 3
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Fever or chills"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Cough"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Shortness of breath"
+                size_hint_x: .6
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .3
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Fatigue"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Muscle aches"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Headache"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Loss of taste"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Sore throat"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Runny nose"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Nausea or vomiting"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+        
+        BoxLayout: 
+            orientation: "horizontal"
+            size_hint_x: .40
+            # label creation 
+            CustLabel: 
+                text: "Diarrhea"
+                size_hint_x: .60
+                font_size:20
+            CheckBox: 
+                color:.294, .761, .623
+                size_hint_x: .30
+            
+<HealthyWindow>:
+    name: "healthy"
+    Label:
+        text: 'Status: Healthy'
         pos_hint: {"center_x":0.5, "top":0.9}
         size_hint: 0.4, 0.1
         font_size: (root.width**2 + root.height**2) / 10**4
@@ -201,6 +457,27 @@
     Image:
         source: "check-qr.png"
 
+    Button:
+        pos_hint:{"x":0.1,"y":0.1}
+        size_hint: 0.25, 0.1
+        font_size: (root.width**2 + root.height**2) / 14**4
+        text: "Back"
+        on_release: app.goToMain()
+
+<WarningWindow>:
+    Label:
+        text: 'Status: At Risk For COVID'
+        pos_hint: {"center_x":0.5, "top":0.9}
+        size_hint: 0.4, 0.1
+        font_size: (root.width**2 + root.height**2) / 12**4
+
+    Label:
+        text: 'Based on your answers, you may be at risk of having COVID-19. Please do not come to school, contact your healthcare provider and get tested'
+        text_size: root.width*.8, None
+        pos_hint: {"center_x":0.5, "top":0.6}
+        size_hint: 0.5, None
+        font_size: (root.width**2 + root.height**2) / 14**4
+            
     Button:
         pos_hint:{"x":0.1,"y":0.1}
         size_hint: 0.25, 0.1

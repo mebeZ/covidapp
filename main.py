@@ -3,11 +3,18 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import DataBase
-
+from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.scatter import Scatter
+from kivy.core.window import Window
+from kivy.uix.popup import Popup
 
 class CreateAccountWindow(Screen):
     namee = ObjectProperty(None)
@@ -36,7 +43,6 @@ class CreateAccountWindow(Screen):
         self.password.text = ""
         self.namee.text = ""
 
-
 class LoginWindow(Screen):
     osis = ObjectProperty(None)
     password = ObjectProperty(None)
@@ -57,29 +63,56 @@ class LoginWindow(Screen):
         self.osis.text = ""
         self.password.text = ""
 
-
 class MainWindow(Screen):
     def takeSurvey(self):
-        sm.current = "survey"
+        if not surveyComplete:
+            sm.current = "survey"
+        else:
+            popup = Popup(title='Survey Already Taken',
+            content=Label(text='You have already taken the daily survey'),
+            size_hint=(None, None), size=(400, 400))
+            popup.open()
 
     def getData(self):
         sm.current = "data"
 
     def getCode(self):
-        sm.current = "code"
+        if surveyComplete:
+            sm.current = "healthy"
+        else:
+            popup = Popup(title='View Results',
+            content=Label(text='Please complete the survey to view your results'),
+            size_hint=(None, None), size=(400, 400))
+            popup.open()
 
     def logout(self):
         sm.current = "login"
-
+    
 class DailySurvey(Screen):
+    def contSurvey(self):
+        sm.current = "survey2"
+        
+class DailySurveyTwo(Screen):
+    def contSurvey(self):
+        sm.current = "survey3"
+
+class DailySurveyThree(Screen):
+    def submitSurvey(self):
+        global surveyComplete
+        sm.current = "healthy"
+        surveyComplete = True
+
+class CheckBoxLayout(Screen):
     pass
 
-class QRCode(Screen):
+class HealthyWindow(Screen):
+    pass
+
+class WarningWindow(Screen):
     pass
 
 class SchoolData(Screen):
     pass
-
 
 class WindowManager(ScreenManager):
     pass 
@@ -98,18 +131,18 @@ def invalidForm():
 
     pop.open()
 
-
+surveyComplete = False
 kv = Builder.load_file("my.kv")
 
 sm = WindowManager()
 db = DataBase("users.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main"), DailySurvey(name="survey"), QRCode(name="code"), SchoolData(name="data")]
+screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main"), DailySurvey(name="survey"), DailySurveyTwo(name="survey2"), DailySurveyThree(name="survey3"), HealthyWindow(name="healthy"), WarningWindow(name="warning"), SchoolData(name="data")]
 
 for screen in screens:
     sm.add_widget(screen)
 
-sm.current = "main"
+sm.current = "warning"
 
 
 class MyMainApp(App):
