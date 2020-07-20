@@ -66,7 +66,7 @@ class LoginWindow(Screen):
 class MainWindow(Screen):
     def takeSurvey(self):
         if not surveyComplete:
-            sm.current = "survey"
+            sm.current = "surveyInfo"
         else:
             popup = Popup(title='Survey Already Taken',
             content=Label(text='You have already taken the daily survey'),
@@ -87,6 +87,12 @@ class MainWindow(Screen):
 
     def logout(self):
         sm.current = "login"
+
+class DailySurveyInfo(Screen):
+    def back(self):
+        sm.current = "main"
+    def startSurvey(self):
+        sm.current = "survey"
     
 class DailySurvey(Screen):
     def contSurvey(self):
@@ -95,12 +101,16 @@ class DailySurvey(Screen):
 class DailySurveyTwo(Screen):
     def contSurvey(self):
         sm.current = "survey3"
+    def back(self):
+        sm.current = "survey"
 
 class DailySurveyThree(Screen):
     def submitSurvey(self):
         global surveyComplete
         sm.current = "healthy"
         surveyComplete = True
+    def back(self):
+        sm.current = "survey2"
 
 class CheckBoxLayout(Screen):
     pass
@@ -137,12 +147,12 @@ kv = Builder.load_file("my.kv")
 sm = WindowManager()
 db = DataBase("users.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main"), DailySurvey(name="survey"), DailySurveyTwo(name="survey2"), DailySurveyThree(name="survey3"), HealthyWindow(name="healthy"), WarningWindow(name="warning"), SchoolData(name="data")]
+screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main"), DailySurveyInfo(name="surveyInfo"), DailySurvey(name="survey"), DailySurveyTwo(name="survey2"), DailySurveyThree(name="survey3"), HealthyWindow(name="healthy"), WarningWindow(name="warning"), SchoolData(name="data")]
 
 for screen in screens:
     sm.add_widget(screen)
 
-sm.current = "warning"
+sm.current = "main"
 
 
 class MyMainApp(App):
