@@ -171,6 +171,48 @@
             root.manager.transition.direction = "up"
             root.getCode()
 
+<DailySurveyInfo>:
+    name: "surveyInfo"
+
+    Label:
+        text: "Survey Notice"
+        size_hint: 0.8, 0.2
+        pos_hint: {"x":0.1, "top":1}
+        font_size: (root.width**2 + root.height**2) / 12**4
+                
+    Label:
+        text: "This questionnaire can be completed only once"
+        size_hint: 0.8,0.15
+        pos_hint: {"x": 0.1, "y": 0.6}
+        font_size: (root.width**2 + root.height**2) / 14**4
+    Label:
+        text: "per day on the same device. Please review"
+        size_hint: 0.8,0.15
+        pos_hint: {"x": 0.1, "y": 0.5}
+        font_size: (root.width**2 + root.height**2) / 14**4
+    Label:
+        text: "carefully your answers before submitting."
+        size_hint: 0.8,0.15
+        pos_hint: {"x": 0.1, "y": 0.4}
+        font_size: (root.width**2 + root.height**2) / 14**4
+
+    Button:
+        text: "<Back"
+        font_size: (root.width**2 + root.height**2) / 14**4
+        size_hint: 0.5, 0.25
+        pos_hint: {"x":0, "y": 0.02}
+        on_release:
+            root.manager.transition.direction = "right"
+            root.back()
+    Button:
+        text: "Start Survey>"
+        font_size: (root.width**2 + root.height**2) / 14**4
+        size_hint: 0.5, 0.25
+        pos_hint: {"x":0.5,"y":0.02}
+        on_release:
+            root.manager.transition.direction = "left"
+            root.startSurvey()
+
 <DailySurvey>:
     name: "survey"
     fever: fever
@@ -269,6 +311,15 @@
         pos_hint: {"center_x":0.5, "center_y":0.35}
 
     Button:
+        pos_hint: {"x":0.55,"y": 0.15}
+        text: "Back"
+        size_hint: 0.3,0.07
+        font_size: (root.width**2 + root.height**2) / 16**4
+        on_release:
+            root.manager.transition.direction = "right"
+            root.back()
+
+    Button:
         pos_hint:{"x":0.55,"y":0.05}
         size_hint: 0.3, 0.07
         text: "Next Page"
@@ -292,6 +343,15 @@
 
     CheckBoxLayout:
         pos_hint: {"center_x":0.5, "center_y":0.35}
+
+    Button:
+        pos_hint: {"x":0.55,"y": 0.15}
+        text: "Back"
+        size_hint: 0.3,0.07
+        font_size: (root.width**2 + root.height**2) / 16**4
+        on_release:
+            root.manager.transition.direction = "right"
+            root.back()
 
     Button:
         pos_hint:{"x":0.55,"y":0.05}
